@@ -1,7 +1,7 @@
 export default function busca() {
   return (
     <div>
-      <p>Página 1</p>
+      <p className="bg-gray-800">Página 1</p>
     </div>
   )
 }
