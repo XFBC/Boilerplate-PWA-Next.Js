@@ -1,36 +1,35 @@
-'use client'
-import { District } from '../types'
-import { getDistricts } from '../api'
-import { useEffect, useState } from 'react'
+import { District } from '../types';
+import { getDistricts } from '../api';
+import { useEffect, useState } from 'react';
 
-export default function District() {
-  const [districts, setDistricts] = useState<District[]>([])
-  const [filteredDistricts, setFilteredDistricts] = useState([])
-  const [searchQuery, setSearchQuery] = useState('')
-  const [totalMunicipios, setTotalMunicipios] = useState(0)
+export default function Districts() { // Alterado o nome do componente para Districts
+  const [districts, setDistricts] = useState<District[]>([]);
+  const [filteredDistricts, setFilteredDistricts] = useState<District[]>([]); // Definido o tipo de filteredDistricts
+  const [searchQuery, setSearchQuery] = useState('');
+  const [totalMunicipios, setTotalMunicipios] = useState(0);
 
   useEffect(() => {
     getDistricts()
       .then((data: District[]) => {
-        setDistricts(data)
-        setTotalMunicipios(data.length)
+        setDistricts(data);
+        setTotalMunicipios(data.length);
       })
-      .catch((error: Error) => console.error(error))
-  }, [])
+      .catch((error: Error) => console.error(error));
+  }, []);
 
   const handleSearch = () => {
-    const query = searchQuery.trim().toLowerCase()
+    const query = searchQuery.trim().toLowerCase();
     if (query === '') {
-      setFilteredDistricts([])
-      setTotalMunicipios(0)
-      return
+      setFilteredDistricts([]);
+      setTotalMunicipios(0);
+      return;
     }
 
     const filtered = districts.filter(district =>
-      district.nome.toLowerCase().includes(query)
-    )
-    setFilteredDistricts(filtered)
-    setTotalMunicipios(filtered.length) // Atualize o total com base nos municípios filtrados
+      district.municipio.nome.toLowerCase().includes(query)
+    );
+    setFilteredDistricts(filtered);
+    setTotalMunicipios(filtered.length);
   }
 
   return (
@@ -45,17 +44,17 @@ export default function District() {
             onChange={e => setSearchQuery(e.target.value)}
           />
           <button
-            className=" group flex flex-row gap-2 items-center px-2 py-1 border  border-slate-200 dark:border-slate-200/5 rounded-md"
+            className="group flex flex-row gap-2 items-center px-2 py-1 border border-slate-200 dark:border-slate-200/5 rounded-md"
             onClick={handleSearch}
           >
-            Pesquisar
+            Search
           </button>
         </div>
 
         <div>
           <p>
             {filteredDistricts.length > 0
-              ? `Municípios encontrados:${filteredDistricts.length}`
+              ? `Municipalities found: ${filteredDistricts.length}`
               : ''}
           </p>
           <ul>
