@@ -1,35 +1,33 @@
-import { District } from '../types';
-import { getDistricts } from '../api';
-import { useEffect, useState } from 'react';
+'use client'
+import { District } from '../types'
+import { getDistricts } from '../api'
+import { useEffect, useState } from 'react'
 
-export default function Districts() { // Alterado o nome do componente para Districts
-  const [districts, setDistricts] = useState<District[]>([]);
-  const [filteredDistricts, setFilteredDistricts] = useState<District[]>([]); // Definido o tipo de filteredDistricts
-  const [searchQuery, setSearchQuery] = useState('');
-  const [totalMunicipios, setTotalMunicipios] = useState(0);
+export default function Districts() {
+  const [districts, setDistricts] = useState<District[]>([])
+  const [filteredDistricts, setFilteredDistricts] = useState<District[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     getDistricts()
       .then((data: District[]) => {
-        setDistricts(data);
-        setTotalMunicipios(data.length);
+        setDistricts(data)
       })
-      .catch((error: Error) => console.error(error));
-  }, []);
+      .catch((error: Error) => console.error(error))
+  }, [])
 
   const handleSearch = () => {
-    const query = searchQuery.trim().toLowerCase();
+    const query = searchQuery.trim().toLowerCase()
     if (query === '') {
-      setFilteredDistricts([]);
-      setTotalMunicipios(0);
-      return;
+      setFilteredDistricts([])
+
+      return
     }
 
     const filtered = districts.filter(district =>
       district.municipio.nome.toLowerCase().includes(query)
-    );
-    setFilteredDistricts(filtered);
-    setTotalMunicipios(filtered.length);
+    )
+    setFilteredDistricts(filtered)
   }
 
   return (
@@ -52,11 +50,11 @@ export default function Districts() { // Alterado o nome do componente para Dist
         </div>
 
         <div>
-          <p>
+          {/* <p>
             {filteredDistricts.length > 0
               ? `Municipalities found: ${filteredDistricts.length}`
               : ''}
-          </p>
+          </p> */}
           <ul>
             {filteredDistricts.map(district => (
               <li key={district.municipio.id}>
